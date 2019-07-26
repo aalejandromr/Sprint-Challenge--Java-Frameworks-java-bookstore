@@ -2,18 +2,14 @@ package com.lambdaschool.authenticatedusers;
 
 // Vivek Vishwanath
 
-import com.lambdaschool.authenticatedusers.model.Quote;
-import com.lambdaschool.authenticatedusers.model.Role;
-import com.lambdaschool.authenticatedusers.model.User;
-import com.lambdaschool.authenticatedusers.model.UserRoles;
-import com.lambdaschool.authenticatedusers.repository.QuoteRepository;
-import com.lambdaschool.authenticatedusers.repository.RoleRepository;
-import com.lambdaschool.authenticatedusers.repository.UserRepository;
+import com.lambdaschool.authenticatedusers.model.*;
+import com.lambdaschool.authenticatedusers.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Transactional
 @Component
@@ -23,11 +19,15 @@ public class SeedData implements CommandLineRunner
     RoleRepository rolerepos;
     UserRepository userrepos;
     QuoteRepository todorepos;
+    BookRepository bookRepository;
+    AuthorRepository authorRepository;
 
-    public SeedData(RoleRepository rolerepos, UserRepository userrepos, QuoteRepository todorepos) {
+    public SeedData(RoleRepository rolerepos, UserRepository userrepos, QuoteRepository todorepos, BookRepository bookRepository, AuthorRepository authorRepository) {
         this.rolerepos = rolerepos;
         this.userrepos = userrepos;
         this.todorepos = todorepos;
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -63,5 +63,21 @@ public class SeedData implements CommandLineRunner
         users.add(new UserRoles(new User(), r2));
         User u4 = new User("Jane", "password", users);
         userrepos.save(u4);
+
+        Book book1 = new Book("Book Test 1","ASDN213A",2019);
+        Book book2 = new Book("Book Test 2","NSIW1922",2019);
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+
+        List<Wrote> booksWrote = new ArrayList<>();
+        booksWrote = new ArrayList<>();
+        booksWrote.add(new Wrote(new Author(), book1));
+        Author author1 = new Author("Author lastname", "Author firstname");
+        author1.getBooksWrote().add(new Wrote(author1, book1));
+        authorRepository.save(author1);
+
+//        Book book1 = new Book("Book 1", "1231dasdaB", 2019);
+//        book1.setAuthor(author1);
+//        bookRepository.save(book1);
     }
 }

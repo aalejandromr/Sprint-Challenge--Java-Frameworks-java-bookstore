@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "authors")
-public class Author {
+public class Author extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,9 +17,47 @@ public class Author {
     private String lastname;
     private String firstname;
 
-    @ManyToMany(mappedBy = "authors", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("authors")
-    private List<Book> books = new ArrayList<>();
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("author")
+    private List<Wrote> booksWrote = new ArrayList<>();
 
+    public Author() {
+    }
 
+    public Author(String lastname, String firstname) {
+        this.lastname = lastname;
+        this.firstname = firstname;
+    }
+
+    public long getAuthorid() {
+        return authorid;
+    }
+
+    public void setAuthorid(long authorid) {
+        this.authorid = authorid;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public List<Wrote> getBooksWrote() {
+        return booksWrote;
+    }
+
+    public void setBooksWrote(List<Wrote> booksWrote) {
+        this.booksWrote = booksWrote;
+    }
 }
