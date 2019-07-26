@@ -1,6 +1,8 @@
 package com.lambdaschool.sprintchallengeII.controller;
 
+import com.lambdaschool.sprintchallengeII.model.Author;
 import com.lambdaschool.sprintchallengeII.model.Book;
+import com.lambdaschool.sprintchallengeII.service.AuthorService;
 import com.lambdaschool.sprintchallengeII.service.BookService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -17,18 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/books")
-public class BookController {
+@RequestMapping("/authors")
+public class AuthorController {
 
     @Autowired
-    BookService bookService;
+    AuthorService authorService;
 
-    @ApiOperation(value = "Returns all books with paging ability", responseContainer = "List")
+    @ApiOperation(value = "Returns all authors with paging ability", responseContainer = "List")
     @ApiImplicitParams({@ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrive (0..N)"), @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."), @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query", value = "Sorting criteria in the format: property(asc|desc).")})
     @GetMapping(value = "/all", produces = {"application/json"})
     public ResponseEntity<?> listAllBooks(@PageableDefault(page = 0, size = 1)Pageable pageable)
     {
-        List<Book> allBooks = bookService.findAll(pageable);
-        return new ResponseEntity<>(allBooks, HttpStatus.OK);
+        List<Author> allAuthors = authorService.findAll(pageable);
+        return new ResponseEntity<>(allAuthors, HttpStatus.OK);
     }
+
+
 }
