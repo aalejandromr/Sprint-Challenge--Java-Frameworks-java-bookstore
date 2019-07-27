@@ -1,5 +1,6 @@
 package com.lambdaschool.sprintchallengeII.service;
 
+import com.lambdaschool.sprintchallengeII.exceptions.ResourceNotFoundException;
 import com.lambdaschool.sprintchallengeII.model.Book;
 import com.lambdaschool.sprintchallengeII.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public Book findById(long bookid) throws EntityNotFoundException {
-        return bookRepository.findById(bookid).orElseThrow(() -> new EntityNotFoundException(Long.toString(bookid)));
+    public Book findById(long bookid) throws ResourceNotFoundException {
+        return bookRepository.findById(bookid).orElseThrow(() -> new ResourceNotFoundException(Long.toString(bookid)));
     }
 
     @Override
@@ -31,7 +32,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book update(Book book, long id) {
-        return null;
+    public Book update(Book book, long id) throws ResourceNotFoundException {
+        Book currentBook = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(Long.toString(id)));
+
+        if (book.getIsbn() != null)
+        {
+            currentBook.setIsbn(book.getIsbn());
+        }
+        if(book.getBooktitle() != null)
+        {
+            currentBook.setBooktitle(book.getBooktitle());
+        }
+        currentBook.setCopy(book.getCopy());
+
+        return bookRepository.save(currentBook);
     }
 }

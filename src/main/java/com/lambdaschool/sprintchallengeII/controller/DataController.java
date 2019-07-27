@@ -40,16 +40,17 @@ public class DataController {
     }
 
 
-    @PutMapping(value = "/books/{bookid}")
-    public ResponseEntity<?> updateRestaurant(@RequestBody Book updateBook, @PathVariable long bookid) {
-        bookService.update(updateBook, bookid);
+    @GetMapping(value = "/books/{bookid}")
+    public ResponseEntity<?> updateRestaurant(@PathVariable long bookid) {
+//        bookService.update(updateBook, bookid);
+        bookService.findById(bookid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
-    @DeleteMapping("/restaurant/{restaurantid}")
-    public ResponseEntity<?> deleteRestaurantById(@PathVariable long restaurantid) {
-        restaurantService.delete(restaurantid);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @DeleteMapping("/restaurant/{restaurantid}")
+//    public ResponseEntity<?> deleteRestaurantById(@PathVariable long restaurantid) {
+//        restaurantService.delete(restaurantid);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 }
